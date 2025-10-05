@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>b1d1292a-ac0c-57de-93ed-84f07ee686dc</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 75vh;
+            padding: 10px;
+        }
+        
+        .container {
+            max-width: 320px;
+            width: 100%;
+            background: white;
+            border-radius: 0; /* 移除圆角 */
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            background: #fff;
+            color: Black;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 2px;
+            text-align: center;
+        }
+        
+        .qr-container {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+        
+        .qr-image {
+            width: 100%;
+            height: 100%;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0px;
+            color: #999;
+            overflow: hidden;
+            border: 2px solid #07c160;
+        }
+        
+        .price {
+            font-size: 28px;
+            color: #9b9827;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .expiry-info {
+            font-size: 12px;
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .success-message {
+            color: #07c160;
+            font-size: 16px;
+            margin: 10px 0;
+            display: none;
+        }
+
+        .countdown-tip {
+            font-size: 16px;
+            color: #ff6b6b;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+		
+		.scan-tip {
+            font-size: 12px;
+            color: #666;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>#微信附近极品私约</h1>
+            <p class="subtitle">付费加入主播 私密群3号房</p>
+        </div>        
+        <div class="content">
+		        离异.交友.家庭.开房.出轨
+            <div class="price">付费进群，&yen;3元</div>            
+            <!-- 二维码容器 -->
+            <div class="qr-container">
+                <!-- 支付二维码 -->
+                <div class="qr-image" id="paymentQR">
+                    <img src="eb1257f6-b1e0-5b02-be27-6e57ca18bffd.png" alt="微信支付二维码" style="width:100%;height:100%;object-fit:cover;">
+                </div>                
+                <!-- 群二维码（初始隐藏） -->
+                <div class="qr-image" id="groupQR" style="display: none;">
+                    <img src="mmqrcode1759374699028.png" alt="群二维码" style="width:100%;height:100%;object-fit:cover;">
+                </div>
+            </div>
+            <!-- 有效期信息 -->
+            <div class="expiry-info" id="expiryInfo"></div>
+			<div class="scan-tip">无法长按 保存相册 或截图扫码</div>
+            <!-- 倒计时提示 -->
+            <div class="countdown-tip" id="countdownTip">注意：5分钟后显示群图片..</div>
+            <!-- 成功信息 -->
+            <div class="success-message" id="successMessage">已解锁'扫描二维码入群</div>
+        </div>
+    </div>
+
+    <script>
+        let countdownInterval;
+        let countdownTime = 5 * 60; // 5分钟，单位：秒
+        let countdownStarted = false;
+
+        // 计算有效期并显示
+        function updateExpiryInfo() {
+            const now = new Date();
+            const expiryDate = new Date(now);
+            expiryDate.setDate(now.getDate() + 1); // 1天后过期
+            
+            const expiryString = expiryDate.toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            });
+            
+            document.getElementById('expiryInfo').textContent = `有效期至：${expiryString}`;
+        }
+
+        // 开始倒计时
+        function startCountdown() {
+            if (countdownStarted) return;
+            countdownStarted = true;
+            
+            const countdownTip = document.getElementById('countdownTip');
+            
+            countdownInterval = setInterval(function() {
+                const minutes = Math.floor(countdownTime / 60);
+                const seconds = countdownTime % 60;
+                
+                countdownTip.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} 后显示群图片..`;
+                
+                if (countdownTime <= 0) {
+                    clearInterval(countdownInterval);
+                    showGroupQRCode();
+                }
+                countdownTime--;
+            }, 1000);
+        }
+
+        // 显示群二维码
+        function showGroupQRCode() {
+            document.getElementById('paymentQR').style.display = 'none';
+            document.getElementById('groupQR').style.display = 'flex';
+            document.getElementById('successMessage').style.display = 'block';
+            document.getElementById('countdownTip').style.display = 'none';
+        }
+
+        // 监听支付二维码点击事件 模拟支付成功
+        document.querySelector('#paymentQR img').addEventListener('click', function() {
+            // 在实际使用中，这里应该由微信支付回调触发
+            startCountdown();
+        });
+
+        // 自动检测支付状态 每3秒检查一次
+        setInterval(function() {
+            // 在实际使用中，这里应该调用后端API检查支付状态
+            // 以下是模拟逻辑，实际使用时需要移除
+            const isPaid = Math.random() < 0.05; // 5%概率模拟支付成功
+            if (isPaid && !countdownStarted) {
+                startCountdown();
+            }
+        }, 3000);
+
+        // 初始化显示有效期
+        updateExpiryInfo();
+
+        // 检查URL参数，如果包含支付成功参数，开始倒计时
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('payment') === 'success') {
+            startCountdown();
+        }
+    </script>
+</body>
+</html>
