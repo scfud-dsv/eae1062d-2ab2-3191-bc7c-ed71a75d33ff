@@ -110,11 +110,11 @@
     <div class="container">
         <div class="header">
             <h1>#微信附近极品私约</h1>
-            <p class="subtitle">付费加入主播 私密群3号房</p>
+            <p class="subtitle">付费进入主播 私密群3号房</p>
         </div>        
         <div class="content">
-		        离异.交友.家庭.开房.出轨
-            <div class="price">付费进群，&yen;3元</div>            
+		        D之友和B之友
+            <div class="price">付费进群，&yen;6元</div>            
             <!-- 二维码容器 -->
             <div class="qr-container">
                 <!-- 支付二维码 -->
@@ -127,10 +127,10 @@
                 </div>
             </div>
             <!-- 有效期信息 -->
+			<div class="scan-tip">例截图 或：保存本地 相册扫码</div>
             <div class="expiry-info" id="expiryInfo"></div>
-			<div class="scan-tip">无法长按 保存相册 或截图扫码</div>
             <!-- 倒计时提示 -->
-            <div class="countdown-tip" id="countdownTip">注意：5分钟后显示群图片..</div>
+            <div class="countdown-tip" id="countdownTip">注意：2分钟后显示群图片..</div>
             <!-- 成功信息 -->
             <div class="success-message" id="successMessage">已解锁'扫描二维码入群</div>
         </div>
@@ -138,7 +138,7 @@
 
     <script>
         let countdownInterval;
-        let countdownTime = 5 * 60; // 5分钟，单位：秒
+        let countdownTime = 7 * 60; // 5分钟，单位：秒
         let countdownStarted = false;
 
         // 计算有效期并显示
@@ -170,7 +170,7 @@
                 const minutes = Math.floor(countdownTime / 60);
                 const seconds = countdownTime % 60;
                 
-                countdownTip.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} 后显示群图片..`;
+                countdownTip.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} ; 后显示群图片..`;
                 
                 if (countdownTime <= 0) {
                     clearInterval(countdownInterval);
